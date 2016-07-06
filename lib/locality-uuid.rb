@@ -1,21 +1,21 @@
 # Copyright (c) 2013, Groupon, Inc.
-# All rights reserved. 
-# 
+# All rights reserved.
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
-# are met: 
-# 
+# are met:
+#
 # Redistributions of source code must retain the above copyright notice,
-# this list of conditions and the following disclaimer. 
-# 
+# this list of conditions and the following disclaimer.
+#
 # Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
-# documentation and/or other materials provided with the distribution. 
-# 
+# documentation and/or other materials provided with the distribution.
+#
 # Neither the name of GROUPON nor the names of its contributors may be
 # used to endorse or promote products derived from this software without
-# specific prior written permission. 
-# 
+# specific prior written permission.
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 # IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 # TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
@@ -29,8 +29,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 require 'macaddr'
-require 'atomic'
 require 'digest/md5'
+require 'concurrent'
 
 class UUID
   GEMVERSION      = '1.2.0'
@@ -44,8 +44,8 @@ class UUID
   @@REGEX         = /^[0-9a-zA-Z]{8}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{12}$/
 
   @@sequential    = false
-  @@counter       = Atomic.new(Random.rand(@@COUNTER_MAX))
-  
+  @@counter       = Concurrent::Atomic.new(Random.rand(@@COUNTER_MAX))
+
   def initialize input = nil
     if input == nil
       generate
@@ -92,7 +92,7 @@ class UUID
     x[5 ] = s[5 ]
     x[6 ] = s[6 ]
     x[7 ] = s[7 ]
-    
+
     x[9 ] = s[8 ]
     x[10] = s[9 ]
     x[11] = s[10]
@@ -153,7 +153,7 @@ class UUID
     count = 0
 
     if !@@sequential
-      countn = @@counter.update do |x| 
+      countn = @@counter.update do |x|
         c = x + @@PRIME
         (c >= @@COUNTER_MAX ? c - @@COUNTER_MAX : c)
       end
@@ -163,7 +163,7 @@ class UUID
       count |= (((countn & 0xF0000) >> 4) | ((countn & 0xF00000) >> 12))
       count |= (((countn & 0xF000000) >> 20) | ((countn & 0xF0000000) >> 28))
     else
-      countn = @@counter.update do |x| 
+      countn = @@counter.update do |x|
         c = x + 1
         (c >= @@COUNTER_MAX ? 0 : c)
       end

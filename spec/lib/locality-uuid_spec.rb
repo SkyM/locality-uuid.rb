@@ -1,21 +1,21 @@
 # Copyright (c) 2013, Groupon, Inc.
-# All rights reserved. 
-# 
+# All rights reserved.
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
-# are met: 
-# 
+# are met:
+#
 # Redistributions of source code must retain the above copyright notice,
-# this list of conditions and the following disclaimer. 
-# 
+# this list of conditions and the following disclaimer.
+#
 # Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
-# documentation and/or other materials provided with the distribution. 
-# 
+# documentation and/or other materials provided with the distribution.
+#
 # Neither the name of GROUPON nor the names of its contributors may be
 # used to endorse or promote products derived from this software without
-# specific prior written permission. 
-# 
+# specific prior written permission.
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 # IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
 # TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
@@ -30,6 +30,7 @@
 
 require 'spec_helper'
 require 'locality-uuid'
+require "set"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
@@ -89,7 +90,7 @@ describe UUID do
       ids[i-1][0].should == ids[i][0]
       ids[i-1][1].should == ids[i][1]
       ids[i-1][2].should == ids[i][2]
-      
+
       a = ids[i-1][7].to_s
       b = ids[i][7].to_s
 
@@ -173,7 +174,7 @@ describe UUID do
     nthreads = 10
     effective_n = (n / nthreads).to_i * nthreads
     threads = []
-    
+
     a = Array.new effective_n
     s = Set.new
 
