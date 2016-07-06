@@ -44,7 +44,7 @@ class UUID
   @@REGEX         = /^[0-9a-zA-Z]{8}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{4}\-[0-9a-zA-Z]{12}$/
 
   @@sequential    = false
-  @@counter       = Concurrent::Atomic.new(Random.rand(@@COUNTER_MAX))
+  @@counter       = Concurrent::AtomicFixnum.new(Random.rand(@@COUNTER_MAX))
 
   def initialize input = nil
     if input == nil
