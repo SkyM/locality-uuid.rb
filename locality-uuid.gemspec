@@ -30,7 +30,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require File.expand_path('../lib/locality-uuid.rb', __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
 
 Gem::Specification.new do |gem|
   gem.add_development_dependency 'mocha', '~> 1.1'
@@ -53,7 +55,7 @@ Gem::Specification.new do |gem|
   gem.required_rubygems_version = Gem::Requirement.new(">= 1.3.6")
   gem.summary = %q{UUID for data locality in distributed systems.}
   gem.test_files = Dir['spec/**/*']
-  gem.version = UUID::GEMVERSION
+  gem.version = '1.2.2'
   gem.license = 'MIT'
 end
 
